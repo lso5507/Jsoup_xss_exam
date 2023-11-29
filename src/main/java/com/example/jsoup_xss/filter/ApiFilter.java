@@ -40,12 +40,7 @@ public class ApiFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws
         IOException,
         ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-
-        String requestURI = req.getRequestURI();
-
-        chain.doFilter(req, res);
+        chain.doFilter(new RequestWrapper((HttpServletRequest) request), response);
     }
 
     /*

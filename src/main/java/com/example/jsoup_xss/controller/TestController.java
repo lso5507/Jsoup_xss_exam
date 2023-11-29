@@ -2,20 +2,17 @@ package com.example.jsoup_xss.controller;
 
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 public class TestController {
-	@GetMapping("")
+	@GetMapping("/test")
 	public String test(){
 		return "hello";
 	}
-	@PostMapping("")
-	public String formTest(@ModelAttribute Map<String,Object> map){
+	@PostMapping("/test")
+	public String formTest(@RequestBody Map<String,Object> map){
 
 		return "test";
 	}
