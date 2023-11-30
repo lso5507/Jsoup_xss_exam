@@ -7,55 +7,34 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * kbsys
- *
- * @param model
- * @param menuModel
- * @param authId
- * @param request
- * @return
- */
 
 @Slf4j
-public class RequestWrapper extends HttpServletRequestWrapper {
+public class RequestBodyWrapper extends HttpServletRequestWrapper {
     /**
      * Constructs a request object wrapping the given request.
      *
      * @param request The request to wrap
      * @throws IllegalArgumentException if the request is null
      */
-    HttpServletRequest request;
     private String requestData;
-    public RequestWrapper(HttpServletRequest request) throws IOException {
+    public RequestBodyWrapper(HttpServletRequest request) throws IOException {
         super(request);
         ObjectMapper mapper = new ObjectMapper();
         requestData=requestDataByte(request);
-        // String to JSONObject
-        Map<String,Object> map= mapper.readValue(requestData, HashMap.class);
-
-
+        // < OR > ESCAPE
+        requestData=requestData.replaceAll("<","&lt;").replaceAll(">","&rt;");
     }
 
-    @Override
-    public Map<String, String[]> getParameterMap() {
-        Map<String, String[]> paramMap = super.getParameterMap();
-        return super.getParameterMap();
-    }
     /**
      * The default behavior of this method is to return getInputStream() on the
      * wrapped request object.
      */
     @Override
     public ServletInputStream getInputStream() throws IOException {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(this.requestData.getBytes(StandardCharsets.UTF_8));
+       ByteArrayInputStream inputStream = new ByteArrayInputStream(this.requestData.getBytes(StandardCharsets.UTF_8));
         return new ServletInputStream() {
             @Override
             public boolean isFinished() {
@@ -78,7 +57,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             }
         };
     }
-
     /**
      * The default behavior of this method is to return getReader() on the
      * wrapped request object.
@@ -86,15 +64,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
     @Override
     public BufferedReader getReader() throws IOException {
         return new BufferedReader(new InputStreamReader(this.getInputStream()));
-    }
-    @Override
-    public String getParameter(String paramName) {
-        String value = super.getParameter(paramName);
-        return doFilter(paramName, value);
-    }
-    private String doFilter(String pathName,String value){
-        log.debug("pathName::{} value::{}",pathName,value);
-        return "test";
     }
     //==request Body 가로채기==//
     private String requestDataByte(HttpServletRequest request) throws IOException {
