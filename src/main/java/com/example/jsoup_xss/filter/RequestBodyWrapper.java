@@ -1,5 +1,6 @@
 package com.example.jsoup_xss.filter;
 
+import com.example.jsoup_xss.util.JSoupXssUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
@@ -25,7 +26,7 @@ public class RequestBodyWrapper extends HttpServletRequestWrapper {
         ObjectMapper mapper = new ObjectMapper();
         requestData=requestDataByte(request);
         // < OR > ESCAPE
-        requestData=requestData.replaceAll("<","&lt;").replaceAll(">","&rt;");
+        requestData= JSoupXssUtil.stringBasicCleanXss(requestData);
     }
 
     /**

@@ -39,13 +39,12 @@ public class ApiFilter implements Filter {
         IOException,
         ServletException {
         String contentType = request.getContentType();
-
         // Content-Type이 "application/json"인지 확인합니다.
         if (contentType != null && contentType.toLowerCase().contains("application/json")) {
             chain.doFilter(new RequestBodyWrapper((HttpServletRequest) request), response);
         } else {
 
-            chain.doFilter(new RequestParamWrapper((sHttpServletRequest) request), response);
+            chain.doFilter(new RequestParamWrapper((HttpServletRequest) request), response);
         }
 
     }

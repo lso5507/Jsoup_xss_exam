@@ -1,10 +1,10 @@
 package com.example.jsoup_xss;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 public class JsoupXssTest {
 	@Test
 	public void JsoupXssTest(){
